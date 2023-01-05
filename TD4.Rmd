@@ -1,0 +1,110 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# *TD4*
+
+1 -- Statistiques multivariées On va travailler avec des données issues d'un jury de semestre d'un diplôme en informatique : fichier Bilan_Notes.csv
+
+Exercice 1 Lecture du fichier csv notes \<- read.table("Bilan_Notes.csv", sep = ";", dec = ",", header = TRUE, check.names = FALSE)
+
+```{r}
+notes <- read.table("Bilan_Notes.csv", sep = ";", dec = ",", header = TRUE, check.names = FALSE)
+notes
+
+```
+
+1.  Faites l'histogramme de la variable moyenne
+
+```{r}
+moy=notes$Moyenne
+hist(moy)
+```
+
+2.  Calculer le résumé de cette variable
+
+```{r}
+summary(notes$Moyenne)
+```
+
+3.  Dessiner le nuage de points correspondant aux variables "UE1" et "UE2". Semble-t-il y avoir une corrélation
+
+```{r}
+UE1=notes$UE1
+UE2=notes$UE2
+plot(UE1, col = "blue", pch = 3)
+lines(UE1, col = "red", pch = 3)
+
+```
+
+linéaire ? Et entre "Moyenne" et "UE1" ?
+
+```{r}
+cor(UE1,UE2, method="pearson")
+cor(moy,UE2, method="pearson")
+```
+
+Exercice 2 Passer en revue les couples Pour afficher en un seul graphique tous les nuages de points en couplant deux à deux toutes les variables : 1. pairs(notes) affiche tous les nuages
+
+```{r}
+
+```
+
+2.  scatterplotMatrix(notes) de la librairie car affiche en plus la distribution de chaque variable sur la diagonale.
+
+```{r}
+
+```
+
+Exercice 3 Corrélations entre les variables On calcule la matrice des covariances et la matrice des corrélations : notes.cov \<- cov(notes) notes.cor \<- cor(notes) 1. Quelle est la taille de ces matrices ?
+
+```{r}
+
+```
+
+2.  Quels sont les variables qui sont le plus corrélées ?
+
+```{r}
+
+```
+
+3.  QUels sont les variables qui ont une corrélation négative ?
+
+```{r}
+
+```
+
+Exercice 4 Affichage des corrélations Comme ce n'est pas facile de passer en revue ces matrices aussi grosses on va utiliser des outils graphiques. 1. dans la librairie corrplot on peut faire corrplot(notes.cor, method="number",type= "lower",insig = "blank", number.cex = 0.6) qui permet d'afficher les coefficients de corrélation avec un code couleur
+
+```{r}
+
+```
+
+2.  ggpairs(notes) de la librairie GGally affiche nuages, corrélations et densités.
+
+```{r}
+
+```
+
+2 -- Analyse par Composantes Principales
+
+```{r}
+
+```
+
+Exercice 5 ACP On lance une analyse par composantes principales, en enlevant les colonnes "Moyenne", "UE1", "UE2", "UE3" que l'on garde comme variable supplémentaires. library(FactoMineR) notes.pca \<- PCA(notes, quanti.sup = c(1, 2, 9, 16)) Cette commande affiche le graphe des variables et le graphe des individus sur les deux premiers axes. 1. Pour afficher les pourcentages d'inertie par axe : barplot(notes.pca\$eig[,2], names = paste("Axe",1 : nrow(notes.pca\$eig)))
+
+```{r}
+
+```
+
+2.  Pour obtenir le résumé de l'ACP summary(notes.pca)
+
+```{r}
+
+```
+
+3.  Pour choisir les axes où projeter les individus : plot(notes.pca, choix = "ind") plot(notes.pca, axes = c(1,3), choix = "ind")
+4.  Pour choisir les axes pour le cercle des corrélations : plot(notes.pca, choix = "var") plot(notes.pca, axes = c(1,3), choix = "var")
+5.  Comment évaluez-vous les deux premiers axes ? Est-ce qu'ils permettent de voir des tendances ? 3 -- A faire Ajouter au rendu 3 (les Pokemon) les analyses issues de ce qu'on a vu dans ce TD

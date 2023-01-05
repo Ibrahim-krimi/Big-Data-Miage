@@ -1,0 +1,284 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# Partie 1: Stats unidimensionnelle
+
+Exo1:
+
+```{r}
+library(BioStatR)
+str(Mesures)
+```
+
+```{r}
+names(Mesures)
+```
+
+1.nombre d'enregistremnts
+
+```{r}
+dim(Mesures)[1]
+```
+
+2.Nombre de variable
+
+```{r}
+dim(Mesures[2])
+```
+
+3.  Comment afficher les 15 derniers enregistrements du DataSet ?
+
+```{r}
+tail(Mesures,15)
+```
+
+Exo2: Modalités de la variable espece:
+
+```{r}
+mes_especes<-Mesures$espece
+modalites<-levels(mes_especes)
+modalites
+modalites[2]
+```
+
+1.  Quels sont les effectifs de chaque modalité du caractère espece ?
+
+```{r}
+length(mes_especes[mes_especes=="bignone"])
+length(mes_especes[mes_especes=="glycine blanche"])
+length(mes_especes[mes_especes=="glycine violette"])
+length(mes_especes[mes_especes=="laurier rose"])
+length(which(mes_especes=="bignone"))
+table(mes_especes)
+```
+
+2.  Quelle est le mode de ce caractère ?
+
+```{r}
+table(mes_especes)
+```
+
+3.  Donnez le tableau des contingences qui regroupe les effectifs des différentes modalités d'une variable qualitative.
+
+```{r}
+
+```
+
+voir plus haut 4. Donnez le tableau des fréquences de chaque modalité.
+
+```{r}
+table(mes_especes)/sum(table(mes_especes))
+```
+
+```{r}
+prop.table(table(mes_especes))
+```
+
+5.  Représenter la distribution de la variable espece par un diagramme en bâtons, puis par un diagramme à secteurs circulaires.
+
+```{r}
+plot(table(mes_especes),lwd = 10,col="red",xlab = "Espece de plante",ylab = "Effectif",main="Repartion selon les l espece")
+```
+
+Exo3 Le DataSet Mesures5 complète le DataSet Mesures en ajoutant de nouvelles variables, notamment une variable discrète graines qui compte le nombre de raines dans certains fruits (qui en possèdent).
+
+```{r}
+Mesures5
+
+```
+
+1.  Quelles sont les espèces pour lesquelles cette variable est renseignée (n'est pas NA qui signifie Not Available) ?
+
+```{r}
+which(is.na(Mesures5$graines))
+Mesures5[which(is.na(Mesures5$graines)),]
+
+```
+
+2.  Utiliser la commande na.exclude pour récupérer les valeurs disponibles de la varaible graines.
+
+```{r}
+mes_gaines<-na.exclude(Mesures5$graines)
+length(mes_gaines)
+```
+
+3.  Quelle sont les modalités de cette variable ? Qulle est la moyenne ? La médiane ? Le mode ? L'écart-type ?
+
+```{r}
+table(mes_gaines)
+```
+
+```{r}
+summary(mes_gaines)
+mean(mes_gaines)
+median(mes_gaines)
+sd(mes_gaines)
+IQR(mes_gaines)
+```
+
+4.  Donner le tableau des effectifs et le tableau des fréquences tableau freaquence
+
+```{r}
+prop.table(table(mes_gaines))
+```
+
+5.  Donner le tableau des efefctifs cumulés croissants
+
+```{r}
+cumsum(table(mes_gaines))
+```
+
+6.  Décrire cette variable graphiquement :
+
+```{r}
+plot(mes_gaines)
+```
+
+a)  par un diagramme en bâtons
+
+```{r}
+plot(table(mes_gaines),lwd = "10",col="red")
+```
+
+b)  par un diagramme par secteurs circulaires
+
+```{r}
+pie(table(mes_gaines))
+```
+
+c)  par la courbe des efefctifs cumulés croissants
+
+```{r}
+plot(cumsum(table(mes_gaines)),type = "l",col="red",main = "Courbe des effectfis cumules croissant")
+points(cumsum((table(mes_gaines))))
+```
+
+7.  Pour calculer les coefficients d'asymétrie γ1 et d'aplatissement γ2 de cette série on utilise les fonctions skewness et kurtosis du package agricolae. Interpréter les valeurs obtenues.
+
+```{r}
+skewness(mes_gaines)
+kurtosis(mes_gaines)
+```
+
+Exo4:
+
+```{r}
+mon_histo <- hist(Mesures$masse)
+str(mon_histo)
+```
+
+1.  Calculez la plus petite et la plus grande valeur de la variable masse et donnez son étendue ;
+
+```{r}
+mes_masses<-Mesures$masse
+min(mes_masses)
+max(mes_masses)
+range(mes_masses)
+minmax<-range(mes_masses)
+etendue<-minmax[2]-minmax[1]
+etendue
+```
+
+2.  Donnez sa moyenne, sa médiane, son écart-type et son intervalle interquartile ;
+
+```{r}
+summary(mes_masses)
+sd(mes_masses)
+IQR(mes_masses)
+```
+
+3.  Dans le regroupement par classe,
+
+<!-- -->
+
+a)  Quelle est la classe modale ?
+
+```{r}
+max(mon_histo$counts)
+e<-which(mon_histo$counts==82)
+classe_modale<-c(mon_histo$breaks[e],mon_histo$breaks[e+1])
+classe_modale
+```
+
+b)  calculez les fréquences fi de chaque classe et vérifiez que la somme donne 1 et que les valeurs de mon_hist\$density sont correctes.
+
+```{r}
+prop.table(mon_histo$counts)
+sum(prop.table(mon_histo$counts)
+)
+```
+
+```{r}
+mon_histo$density*5 #multiple de l amplitudes des class(longeur)
+```
+
+c)  Calculer les effectifs cumulés et les fréquences cumulées croissantes.
+
+```{r}
+cumsum(mon_histo$counts)
+cumsum(prop.table((mon_histo$counts)))
+
+```
+
+d)  Quelle est la valeur de la moyenne si on utilise une répartition statistique groupée ? Comparez avec la moyenne sur les données exactes.
+
+```{r}
+sum(mon_histo$mids * mon_histo$counts)/sum(mon_histo$counts)
+```
+
+4.  Si on utilise pour le regroupe en classes le découpage de [0, 50] en 5 intervalles de même taille, quelle est l'effectif de la classe modale ?
+
+```{r}
+
+```
+
+5.  Décrire cette variable graphiquement :
+
+<!-- -->
+
+a)  avec un histogramme sur lequel on trave la courbe des densités
+
+```{r}
+
+```
+
+b)  avec une courbe des effectifs cumulés croissants
+
+```{r}
+
+```
+
+c)  avec un box-plot (boîte à moustache).
+
+```{r}
+
+```
+
+6.  Calculer le coefficient d'asymétrie et d'aplatissement de la variable masse et interpréter ces résultats.
+
+```{r}
+
+```
+
+```{r}
+p=0.4418605
+n=2
+k=0
+
+
+res=ncol(combn(n,k))*p^k*(1-p)^(n-k)
+res
+
+```
+
+```{r}
+p=0.19/(0.19+0.24)
+p
+```
+
+```{r}
+res=0.4436766*0.3115197
+res
+```

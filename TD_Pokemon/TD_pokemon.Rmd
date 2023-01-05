@@ -1,0 +1,349 @@
+                                    TP_Pokemon
+
+#                             ***TP_Pokemon*** 
+
+
+on va travailler avec des données issues des Pokemon: fichier
+
+listePokemon1G.csv
+
+```{r}
+Poke <- read.table("listePokemon1G.csv", sep = ";", dec = ",", header = TRUE, check.names = FALSE)
+Poke
+```
+Nombre de Pokemon
+
+```{r}
+dim(Poke)[1]
+```
+les Nom de colonne
+```{r}
+names(Poke)
+```
+Variable qualitative:
+
+
+l'effectif de chaque modalite de type de Pokemon
+```{r}
+print("type 1");
+type1<-Poke$`Type 1`
+table(type1)
+print("type 2");
+type2<-Poke$`Type 2`
+table(type2)
+```
+tableau de frequence de chaque modalite
+```{r}
+print("Type  1: ");
+table(type1)/sum(table(type1))
+print("Type  2: ");
+table(type2)/sum(table(type2))
+```
+Representation de la distribution de variable type1 par un diagramme en bâtons en pie
+
+```{r}
+plot(table(type1),lwd = 10,col="red",xlab = "type de pokemon",ylab = "Effectif",main="Repartion selon le type")
+```
+
+
+```{r}
+pie(table(type1))
+```
+les modalites de type 2
+```{r}
+table(Poke$`Type 2`)
+```
+
+Quelles sont les Pokemon qui ont une deuxieme type ?
+```{r}
+Poke$Nom[!Poke$`Type 2`==""]
+
+```
+
+Representation de la distribution de variable type2   par un pie
+```{r}
+pie(table(Poke$`Type 2`))
+
+```
+ICI on peu voir que plus que la moitie de pokemon ne ont pas un deuxiemme type
+
+le tableau des effectifs et le tableau des fréquences tableau freaquence
+```{r}
+prop.table(table(Poke$`Type 2`))
+```
+exactement 58% de pokemon ne possede pas de deuxieme type 
+
+le type de pokemon qui possede plus type 2
+```{r}
+table(Poke$`Type 1`[!Poke$`Type 2`==""])
+maximum<-max(table(Poke$`Type 1`[!Poke$`Type 2`==""]))
+e<-which(table(Poke$`Type 1`[!Poke$`Type 2`==""]) == maximum)
+names(e)
+```
+
+le tableau des contingences qui regroupe les effectifs des différentes modalités d’une variable qualitative.
+```{r}
+print("Type 1 :");
+contingence_table<-addmargins(table(Poke$`Type 1`));
+contingence_table;
+print("Type 2 :");
+contingence_table2<-addmargins(table(Poke$`Type 2`))
+contingence_table2;
+```
+
+Variable qualitative
+
+type 1 et type 2 de pokemon qui il y a les plus de Force-base, Exp base,PV-base,Défense-base,Spécial-base,Vitesse-base,Exp base
+```{r}
+data<-Poke[order(-Poke$`Force-base`),] 
+dataSet <- head(data, 1)
+print("le pokemon qui possede le plus de Force-base:")
+dataSet$Nom ;  dataSet$`Type 1` ; dataSet$`Type 2`
+
+data<-Poke[order(-Poke$`Exp base`),] 
+dataSet <- head(data, 1)
+print("le pokemon qui possede le plus de Exp base:")
+dataSet$Nom ;  dataSet$`Type 1` ; dataSet$`Type 2`
+
+data<-Poke[order(-Poke$`PV-base`),] 
+dataSet <- head(data, 1)
+print("le pokemon qui possede le plus de PV-base:")
+dataSet$Nom ;  dataSet$`Type 1` ; dataSet$`Type 2`
+
+data<-Poke[order(-Poke$`Défense-base`),] 
+dataSet <- head(data, 1)
+print("le pokemon qui possede le plus de Défense-base:")
+dataSet$Nom ;  dataSet$`Type 1` ; dataSet$`Type 2`
+
+data<-Poke[order(-Poke$`Spécial-bas`),] 
+dataSet <- head(data, 1)
+print("le pokemon qui possede le plus de Spécial-bas:")
+dataSet$Nom ;  dataSet$`Type 1` ; dataSet$`Type 2`
+
+data<-Poke[order(-Poke$`Vitesse-base`),] 
+dataSet <- head(data, 1)
+print("le pokemon qui possede le plus de Vitesse-base:")
+dataSet$Nom ;  dataSet$`Type 1` ; dataSet$`Type 2`
+
+data<-Poke[order(-Poke$`Exp base`),] 
+dataSet <- head(data, 1)
+print("le pokemon qui possede le plus de Exp base:")
+dataSet$Nom ;  dataSet$`Type 1` ; dataSet$`Type 2`
+```
+
+
+par la courbe des efefctifs cumulés croissants (type)
+```{r}
+plot(cumsum(table(Poke$`Type 1`)),type = "l",col="red",main = "Courbe des effectfis cumules croissant")
+points(cumsum((table((Poke$`Type 1`)))))
+```
+
+les top 10 Pokemon qui ont les plus Force-base
+```{r}
+attach(Poke) 
+ 
+newdata <- Poke[order(-Poke$`Force-base`),] 
+head(newdata, 10)
+```
+les top 10 Pokemon qui ont les plus Exp base
+```{r}
+attach(Poke) 
+ 
+newdata <- Poke[order(-Poke$`Exp base`),] 
+head(newdata, 10)
+```
+
+
+Histogramme de different variable (Force-base, Exp base,PV-base,Défense-base,Spécial-base,Vitesse-base,Exp base)
+
+```{r}
+pv_base=Poke$`PV-base`
+hist(pv_base);hist(Poke$`Force-base`);hist(Poke$`Défense-base`);hist(Poke$`Spécial-base`);hist(Poke$`Vitesse-base`);hist(Poke$`Exp base`);
+```
+ résumé de  different variable (PV-base,Force-base, Exp base,Défense-base,Spécial-base,Vitesse-base,Exp base)
+ 
+```{r}
+print("PV-base");
+summary(Poke$`PV-base`);
+print("Force-base");
+summary(Poke$`Force-base`);
+print("Exp base");
+summary(Poke$`Exp base`);
+print("Défense-base");
+summary(Poke$`Défense-base`);
+print("Spécial-base");
+summary(Poke$`Spécial-base`);
+print("Vitesse-base");
+summary(Poke$`Vitesse-base`);
+print("Exp base");
+summary(Poke$`Exp base`)
+```
+ Le nuage de points correspondent aux variables des different  Pokemon : (Force-base, Exp base,PV-base,Défense-base,Spécial-base,Vitesse-base,Exp base) 
+ 
+```{r}
+pv_base=Poke$`PV-base`
+plot(pv_base, col = "blue", pch =3);plot(Poke$`Exp base`, col = "blue", pch =3);plot(Poke$`Force-base`, col = "blue", pch =3);plot(Poke$`Défense-base`, col = "blue", pch =3);plot(Poke$`Spécial-base`, col = "blue", pch =3);plot(Poke$`Vitesse-base`, col = "blue", pch =3);plot(Poke$`Exp base`, col = "blue", pch =3)
+```
+
+```{r}
+install.packages("moments") 
+```
+```{r}
+library(moments)
+
+```
+
+ contengenceTable'PV_base'
+```{r}
+contengenceTable = table(Poke$`PV-base`);
+cumsum(contengenceTable)
+
+```
+ Coefficient d’assymétrie  PV base
+```{r}
+coef_Assymetrie = skewness(contengenceTable)
+coef_Assymetrie
+```
+
+d’aplatissement γ2 PV base
+
+```{r}
+coef_Applatissement = kurtosis(contengenceTable)
+print("Le coefficient d'Applatissement: ")
+coef_Applatissement
+```
+
+ Variable quantitative continue (Force base)
+ 
+ 
+ 
+```{r}
+my_hist=hist(Poke$`Force-base`)
+```
+```{r}
+str(my_hist)
+```
+ mon_hist$breaks donne les valeurs des classes utilisées regrouper .
+ 
+```{r}
+my_hist$breaks
+```
+ mon_hist$counts donne les effectifs 
+```{r}
+my_hist$counts
+```
+ mon_hist$density donne les hauteurs hi =fi/aioù ai est l’amplitude de chaque classe
+ 
+```{r}
+my_hist$density
+```
+ mon_hist$mids donne les centres ci de chaque classe.
+```{r}
+my_hist$mids
+```
+ 
+la plus petite et la plus grande valeur de la variable Force base et donnez son étendue ;
+```{r}
+min(Poke$`Force-base`)
+```
+```{r}
+max(Poke$`Force-base`)
+```
+```{r}
+#étendue:
+max(Poke$`Force-base`)-min(Poke$`Force-base`)
+```
+ sa moyenne, sa médiane, son écart-type et son intervalle interquartile ;
+ Moyenne
+```{r}
+mean(Poke$`Force-base`)
+```
+Median
+```{r}
+median(Poke$`Force-base`)
+```
+ecart-type:
+```{r}
+sd(Poke$`Force-base`)
+```
+intervalle interquartile
+```{r}
+IQR(Poke$`Force-base`)
+```
+
+```{r}
+summary(Poke$`Force-base`)
+```
+Calculer les effectifs cumulés et les fréquences cumulées croissantes.
+```{r}
+cumulated_effectif=cumsum(my_hist$counts) # Effectifs cumulés
+cumulated_effectif
+```
+
+fréquences cumulées croissantes.
+```{r}
+eff_Total = sum(my_hist$counts)
+eff_Total
+```
+```{r}
+cumulated_freq = cumulated_effectif/eff_Total
+my_hist$breaks 
+```
+
+```{r}
+cumulated_freq
+```
+2 – Statistiques bidimensionnelles
+
+Avec une variable qualitative 
+
+Si l’on condidère, dans Poke, les variables Type 1 et Type 2 on peut construire un tableau de contingence avec la commande table et lui ajouter des marges avec addmargins
+```{r}
+table_contingence2 <- table(factor(Poke$`Type 1`),Poke$`Type 2`,useNA="no")
+ addmargins(table_contingence2)
+
+```
+
+```{r}
+prop.table(table_contingence2)
+
+```
+la distribution marginale selon la première variable avec margin.table(table_contingence, 1)
+```{r}
+margin.table(table_contingence2, 1)
+
+```
+la distribution marginale des fréquences avec margin.table(prop.table(table_contingence), 1)
+
+```{r}
+margin.table(prop.table(table_contingence2), 1)
+
+```
+ Quelle est la fréquence de la modalité «combat   avec combat » ?
+```{r}
+(prop.table(table_contingence2))[1]
+```
+On peut représenter graphiquement les contingences avec plot(table_contingence)
+```{r}
+plot(table_contingence2)
+
+```
+```{r}
+install.packages("lattice")
+
+```
+
+a) stripplot(Force base ∼ type1, data=Poke) donne la répartition des Force base pour chaque type1  ;
+
+```{r}
+library(BioStatR)
+```
+
+```{r}
+stripplot(Poke$`Force-base` ~ Poke$`Type 1`, data=Poke)
+```
+histogram(∼ Poke$`Force-base` | Poke$`Type 1`, data=Poke) donne un histogramme des masses pour chaque espece ;
+```{r}
+
+```
+

@@ -1,0 +1,303 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+editor_options:
+  markdown:
+    wrap: 72
+---
+
+Nom : Krimi
+
+Prenom : ibrahim
+
+Groupe : 2
+
+# TD2
+
+## **Exercise 1 :**
+
+*X1 -\> U (10; 30) . Utilisez R pour effectuer 1000 tirages aléatoires
+suivant celle loi. Affichez l'histogramme des valeurs obtenues. Calculez
+la moyenne et l'écart-type sur le tirage et comparez avec les valeurs
+théoriques attendues pour E(X1) et σ(X1)*
+
+\`\`
+
+```{r}
+v1 <- runif(1000,10,30)
+plot(v1)
+hist(v1)
+```
+
+```{r}
+moy <-mean(v1)
+ecart<-sd(v1)
+moy;ecart
+```
+
+**Quels sont les valeurs des quartiles de X1 ?**
+
+```{r}
+q1 <- qunif(0.25, 10, 30)
+q3 <- qunif(0.75, 10, 30)
+cat("on trouve q1= ", q1 , "\n" )
+cat("       et q3= ", q3 ,"\n\n" )
+
+
+```
+
+```{r}
+
+```
+
+```{r}
+summary(v1)
+quantile(v1)
+```
+
+**Dessinez avec la fonction curve la fonction de densité de X1**
+
+```{r}
+
+curve(dunif(x,10,30),from =0 , to=40, main="Loi uniforme sur [10, 30]", sub="Densité de probabilité")
+```
+
+4.  ***Dessinez la fonction de répartition de X1***
+
+```{r}
+plot(ecdf(v1))
+
+```
+
+```
+## Exercice 2 Loi normale:
+
+
+**1-Soit la variable aléatoire X2 ❀ N (m, σ) qui suit une loi normale
+avec la même espérance et le même écart-type que la v.a. de l'exercice
+précédent. (c'est à dire m = E(X1) et σ = σ(X1).**
+
+```{r}
+X2<-rnorm(1000,moy,ecart)
+plot(X2)
+hist(X2)
+```
+
+2.  **On voudrait trouver une v.a. X3 suivant une loi normale de même
+    espérance que X1 mais dont 95% des valeurs (en moyenne) soit dans
+    l'intervalle [10; 30]. Quel doit alors être l'écart-type de X3 ?
+    Faites une simulation et comparez l'histogramme obtenu avec les deux
+    précédents.**
+
+```{r}
+x3=rnorm(1000,mean = 5.782748,sd=5)
+hist(x3)
+```
+
+3.  **Sur un même graphique dessinez les courbes des densités de
+    probabiltés de N (0, 1), N (0, 4), N (0, 1/4),**
+
+```{r}
+curve(dnorm(x,mean = 0,sd=1),from = -5,to =7 ,col="red",main="Densite de la loi n(0,1)",axes=F,ylab="")
+axis(1,xaxp=c(-5,7,12))
+axis(2,pos=0,c(-1,1))
+```
+
+```{r}
+curve(dnorm(x,mean = 0,sd=4),from = -5,to =7 ,col="red",main="Densite de la loi n(0,4)",axes=F,ylab="")
+axis(1,xaxp=c(-5,7,12))
+axis(2,pos=0,c(-1,1))
+```
+
+```{r}
+curve(dnorm(x,mean = 0,sd=1/4),from = -5,to =7 ,col="red",main="Densite de la loi n(0,0,25)",axes=F,ylab="")
+axis(1,xaxp=c(-5,7,12))
+axis(2,pos=0,c(-1,1))
+```
+
+4.  **Vérification expérimentale du théorème de DeMoivre-Laplace avec n
+    = 80 et p = 0.1.**
+
+```{r}
+
+```
+
+## **Exercice 3 Loi exponentielle**
+
+Soit X4 E (0.4)
+
+1.  **Effectuez une simulation de 1000 tirages de X4 et dessinez
+    l'istogramme obtenu**
+
+```{r}
+
+X4<-rexp(1000,0.4)
+hist(X4)
+
+```
+
+2.  **Comparez la moyenne et l'écart-type obtenus avec ceux donnés par
+    la théorie**
+
+**`la moyenne theorique`**
+
+```{r}
+
+mean(X4)
+```
+
+**`l'ecart type theorrique`**
+
+```{r}
+sd(X4)
+
+```
+
+**`la moyenne non theorrique`**
+
+```{r}
+th=rexp(1000,rate=0.4)
+mean(th)
+```
+
+**l'ecart type theorrique**
+
+```{r}
+th=rexp(1000,rate=0.4)
+sd(th)
+```
+
+3.  **Dessinez la courbe de la densité de probabilité de X4**
+
+```{r}
+curve(dexp(x,0.4,log=FALSE),from = 0,to = 40,main = "courbe  de densité X4")
+```
+
+4.  **Quelle est la valeur de la médiane de X4 ?**
+
+```{r}
+median(X4)
+
+```
+
+## Exercice 4 Loi Gamma
+
+1.  **Dessinez la courbe représentative de la fonction x 7→ Γ(x) sur [1,
+    10]**
+
+```{r}
+alpha=1
+beta=10
+x=1:10
+curve(dgamma(x,shape=alpha,scale=beta), from = 0, to = 10, col = "green", lwd = 3, xlab = "valeurs", ylab = "Frequence",main = "la fonction x 7→ Γ(x) ")
+```
+
+2.  **Vérifiez que pour n entier on a : Γ(n) = (n − 1)!**
+
+```{r}
+x <- gamma(3)
+x
+ 
+x1=2*1
+x1
+```
+
+3.  **Dessinez sur un même graphique les densités de probabilité
+    correspondant à des variables aléatoires suivant des lois Gamma :
+    γ2, γ3, γ5**
+
+```{r}
+x<-c(0,2,4,6,8,10)
+y2<-dgamma(x,shape=2,rate=0.4)
+y3<-dgamma(x,shape=3,rate=0.4)
+y5<-dgamma(x,shape=5,rate=0.4)
+
+plot(y2,type="o", col="green", pch="o", lty=2, main="les densites de probabilite")
+lines(y3,type="o",  col="blue", pch="o", lty=2)
+lines(y5, type="o",col="red", pch="o", lty=2)
+
+
+```
+
+## Exercice 5
+
+Loi du χ 2 Soit X5 = χ2(10) une variable aléatoire qui suit une loi du χ
+2 à 10 degrés de liberté (ddl = 10).
+
+1.  **Dessinez la courbe de la densité de probabilité de X5 sur [0;
+    20]**
+
+```{r}
+curve(dchisq(x, 10), from = 0, to = 20, col = "green", lwd = 2,main = "Densite de probabilite X5 sur [0;20]")
+```
+
+2.  **Faites une simulation de 1000 tirages de X5 et dessinez
+    l'histogramme correspondant. Vérifiez que la moyenne et l'écart-type
+    obtenus sont proches des valeurs attendues.**
+
+```{r}
+X5 <- rchisq(1000, 10)
+hist(X5)
+```
+
+**Le Moyenne**
+
+```{r}
+Moyenne <- mean(X5)
+Moyenne
+```
+
+**L'écart-type**
+
+```{r}
+Ecarttype <- sd(X5)
+Ecarttype
+```
+
+3.  **Vérifiez expérimentalement via des simulations que**
+
+```{r}
+
+```
+
+## Exercice 6 Loi de Student
+
+Soit X6 ❀ St(10) une variable aléatoire qui suit une loi de Student à 10
+degrés de liberté (ddl = 10).
+
+**1. Dessinez la courbe de la densité de probabilité de X6**
+
+```{r}
+curve(dt(x, 10), from = 0, to = 50, col = "green", lwd = 2,main = "Densité de probabilite X6 ddl=10")
+```
+
+2.  **Faites une simulation de 1000 tirages de X6 et dessinez
+    l'histogramme correspondant. Vérifiez que la moyenne et l'écart-type
+    obtenus sont proches des valeurs attendues.**
+
+```{r}
+X6 <- rt(1000, 10)
+hist(X6)
+```
+
+**La moyenne**
+
+```{r}
+Moyenne <- mean(X6)
+Moyenne
+```
+
+**l'écart-type**
+
+```{r}
+Ecarttype <- sd(X6)
+Ecarttype
+```
+
+3.  **Vérifiez expérimentalement via des simulations que**
+
+```{r}
+
+```

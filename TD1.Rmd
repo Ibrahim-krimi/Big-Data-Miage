@@ -1,0 +1,268 @@
+---
+editor_options:
+  markdown:
+    wrap: 72
+---
+
+### TD1
+
+***realiser par : Krimi ibrahim***
+
+***Ex1:***
+
+Par exemple pour la loi binomiale, on a :
+
+n \<- 20 p \<- 0.3 bin \<- rbinom(1000, n, p)
+
+La variable bin contient un vecteur de 1000 entiers entre 0 et 20
+inclus. Chaque entier correspond à une expérience binomiale B(20, 0.3) :
+répéter 20 fois une expérience de Bernoulli qui a une chance de succès
+de 30% et de compter le nombre de succès. La commande plot(bin) affiche
+graphiquement chacune des 1000 valeurs, dans l'ordre dans lequel elles
+ont été tirées.
+
+d'une varaible aléatoire suivant la même loi binomiale ? comparez-les
+avec les résultats obtenus par simulation la Médiane, de Q1 et de Q3
+
+```{r}
+n<-20
+p<-0.3
+bin<-rbinom(1000,n,p)
+plot(bin,type="p")
+```
+
+1.  Comment connaître le nombre de fois où l'entier 5 apparaît dans le
+    vecteur ?
+
+```{r}
+x<-bin[bin == 5]
+length(x)
+```
+
+2.  Comment afficher le tableau donnant l'effectif de chaque modalité ?
+
+```{r}
+table(bin)
+
+```
+
+3.  Comment calculer la moyenne et l'écart type du vecteur bin ? Est-ce
+    loin de l'espérance et de l'écart-type
+
+```{r}
+mean(bin)
+sd(bin)
+sqrt(n*p*(1-p))
+```
+
+4.  Affichez l'histogramme de bin
+
+```{r}
+hist(bin)
+
+```
+
+5.  A l'aide de la fonction dbinom donnez les probabilités élémentaires
+    correspondant aux modalites 5, 6, 7 et
+
+```{r}
+dbinom(5,n,p)
+dbinom(6,n,p)
+dbinom(7,n,p)
+
+length(bin[bin == 5])/1000
+length(bin[bin == 6])/1000
+length(bin[bin == 7])/1000
+```
+
+#remarque:les resultat ne sont pas identique mais proche \#
+
+6.  Vérifiez que les résultats sont justes avec la formule de la loi
+    binomiale (choose donne les coefficients binomiaux)
+
+```{r}
+k<-c(5,6,7)
+choose(n,k)*p**k*(1-p)**(n-k)
+```
+
+7.  Affichez dans un diagramme en baton, la loi B(20, 0.3)
+
+```{r}
+x<-seq(0,20)
+y<-dbinom(x,n,p)
+plot(x,y,type="h",main="loi binomial, n:20")
+```
+
+8.  Affichez sur l'intervalle [0, 20] la fonction de répartition et
+    identifiez graphiquement les valeurs approchées de
+
+```{r}
+y<-pbinom(x,n,p)
+plot(x,y,main="Fonction de repartition",type="s")
+```
+
+9.  Utilisez dbinom pour retrouver les valeurs ci-dessus et pour
+    calculer le premier et le dernier décile ainsi que la distance
+    interdécile D9 − D1
+
+```{r}
+Med <- qbinom(0.5, n, p)
+Q1 <- qbinom(0.25, n, p)
+Q3 <- qbinom(0.75, n, p)
+D1 <- qbinom(0.1, n, p)
+D9 <- qbinom(0.9, n, p)
+Id <- D9 - D1
+```
+
+### Exercice 2 Loi hypergéométrique
+
+1.  Affichez dans un diagramme en baton la loi H (100, 30, 10)
+
+```{r}
+N=100
+K=30
+n=10
+k<-seq(0,n)
+y<-dhyper(k,N,K,n)
+ plot(k,y,type="h",main="Loi hypergéométrique n 10")
+y
+```
+
+2.  Quel est la médiane, Q1, Q3 ?
+
+```{r}
+Q1 <- qhyper(0.25, N, K, n)
+Q3 <- qhyper(0.75, N, K, n)
+Med <- qhyper(0.5, N, K, n)
+Q1;Med;Q3
+
+```
+
+3.  Simulation : simulez l'expérience aléatoire 1000 fois et stockez les
+    résultats dans un vecteur. Quelle est la moyenne, l'écart-type ?
+
+```{r}
+v<-rhyper(1000,N,K,n)
+moy<-mean(v)
+ecart<-sd(v)
+moy;ecart
+```
+
+4.  Donnez un histogramme de la simulation
+
+```{r}
+hist(v, breaks = length(v))
+
+```
+
+5.  Vérifier si l'on peut approcher les densités de la loi géométrique
+    par une loi binomiale. Laquelle ?
+
+```{r}
+
+```
+
+### **Exercice 5 Loi de Poisson**
+
+1.  Dessinez la densité de probabilités d'une loi de Poisson de
+    paramètre λ = 2
+
+```{r}
+x <- 0:10
+lambda=2
+P<-dpois(x,lambda)
+P
+plot(P,type="h")
+
+```
+
+2.  Dessinez sa fonction de répartition
+
+```{r}
+y<-ppois(x,2)
+plot(x,y,main = "Fonction de répartition", type="s")
+```
+
+3.  Simulez 1000 tirages de la même loi et comparez la moyenne et
+    l'écart-type mesurés par rapport aux valeurs théoriques
+
+```{r}
+v<-rpois(1000,2)
+moy<-mean(v)
+ecart<-sd(v)
+moy;ecart
+####################
+moy2<-mean(P)
+ecart2<-sd(P)
+moy2;ecart2
+
+```
+
+4.  Quelle est la médiane de la loi de Poisson ?
+
+```{r}
+Q1 <- qpois(0.25,2)
+Q3 <- qpois(0.75,2)
+Med <- qpois(0.5,2)
+Q1;Med;Q3
+
+```
+
+5.  Pour X suivant une loi B(60, 0.05) calculez la probabilité P(X = 5)
+    et comparez avec la valeur donnée par une loi de Poisson.
+
+la probabilité P(X = 5)
+
+```{r}
+resultB<- dbinom(5,60,0.05)
+resultB
+
+```
+
+loi de Poisson B(60, 0.05)
+
+```{r}
+resultP <- dpois(5,2)
+resultP
+```
+
+### Exercice 3 Poker
+
+Lorsqu'on distribue 5 cartes à partir d'un paquet de 52 cartes, est-il
+plus probabble d'avoir un poker (n'importe lequel) ou une couleur (5
+cartes de la même "couleur") ?
+
+Probabilite d'avoir 5 cartes de la même "couleur"
+
+```{r}
+choose(13,5)*4/choose(52,5)
+
+```
+
+pour la poker (n'importe lequel),j ai pas compris Poker
+
+```{r}
+
+```
+
+### Exercice 4
+
+Simuler l'extraction d'un échantillon La fonction sample(ensemble, n)
+permet d'échantillonner aléatoirement (par défaut sans remise) n
+éléments dans l'ensemble.
+
+1.  Avec expand.grid puis paste générer un paquet de 52 cartes
+
+```{r}
+couleur<-c("carreaux ","cœurs","trèfles","piques")
+carte<-c("1","2","3","4","5","6","7","8","9","10","j","Q","K","A")
+z<-apply(expand.grid(carte,couleur), 1, paste, collapse="_")
+z
+```
+
+2.  Tirer au sort 5 cartes parmi les 52
+
+```{r}
+sample(z, size = 5 )
+
+```
